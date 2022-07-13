@@ -1,25 +1,24 @@
-const express = require('express');
-const conexao = require('../conexao');
+const connect = require('../services/connection');
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../jwt_secret');
 
 const verificarDadosCadastro = async (req, res, next) => {
     const token = req.headers.authorization;
-    const { descricao, valor, data, categoria_id, tipo } = req.body;
+    const { description, amount, date, category_id, type } = req.body;
 
     if (!token) {
         return res.status(400).json({ mensagem: 'Token não informado.' });
     }
 
-    if (!valor) {
+    if (!amount) {
         return res.status(400).json({ mensagem: 'O campo valor é obrigatório' });
     }
 
-    if (!categoria_id) {
+    if (!category_id) {
         return res.status(400).json({ mensagem: 'O campo categoria é obrigatório' });
     }
 
-    if (!tipo) {
+    if (!type) {
         return res.status(400).json({ mensagem: 'O campo tipo é obrigatório' });
     }
 
@@ -27,9 +26,9 @@ const verificarDadosCadastro = async (req, res, next) => {
         const dadosDoUsuario = jwt.verify(token, jwtSecret);
 
         const query = 'select * from categorias where id = $1';
-        const categoria = await conexao.query(query, [categoria_id]);
+        const category = await connect.query(query, [category_id]);
 
-        if (categoria.rowCount === 0) {
+        if (category.rowCount === 0) {
             return res.status(400).json({ mensagem: 'Categoria não encontrada.' });
         }
 
@@ -52,7 +51,7 @@ const verificarTransacao = async (req, res, next) => {
         const dadosUsuario = jwt.verify(token, jwtSecret);
 
         const query = 'select * from transacoes where id = $1 and usuario_id = $2';
-        const transacao = await conexao.query(query, [id, dadosUsuario.id]);
+        const transacao = await connect.query(query, [id, dadosUsuario.id]);
 
         if (transacao.rowCount === 0) {
             return res.status(400).json({ mensagem: 'Transação não encontrada.' });

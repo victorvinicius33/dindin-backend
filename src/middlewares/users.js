@@ -1,4 +1,4 @@
-const conexao = require('../conexao');
+const connect = require('../services/connection');
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('../jwt_secret');
 
@@ -19,7 +19,7 @@ const verificarUsuario = async (req, res, next) => {
 
     try {
         const query = 'select * from usuarios where email = $1';
-        const usuario = await conexao.query(query, [email]);
+        const usuario = await connect.query(query, [email]);
 
         if (usuario.rowCount > 0) {
             return res.status(400).json({ mensagem: 'Já existe um usuário cadastrado com o e-mail informado.' });
@@ -47,7 +47,7 @@ const verificarDadosLogin = async (req, res, next) => {
 
     try {
         const query = 'select * from usuarios where email = $1';
-        const usuarios = await conexao.query(query, [email]);
+        const usuarios = await connect.query(query, [email]);
 
         if (usuarios.rowCount === 0) {
             return res.status(401).json({ mensagem: 'Usuário e/ou senha inválido(s).' });
@@ -100,7 +100,7 @@ const verificarAtualizacaoDados = async (req, res, next) => {
         const dadosUsuario = jwt.verify(token, jwtSecret);
 
         const query = 'select * from usuarios where id = $1';
-        const usuario = await conexao.query(query, [dadosUsuario.id]);
+        const usuario = await connect.query(query, [dadosUsuario.id]);
 
         if (usuario.rowCount === 0) {
             return res.status(401).json({ mensagem: 'Usuário não encontrado.' });
@@ -108,7 +108,7 @@ const verificarAtualizacaoDados = async (req, res, next) => {
         
         if (email !== usuario.rows[0].email) {
             const query = 'select * from usuarios where email = $1';
-            const usuario = await conexao.query(query, [email]);
+            const usuario = await connect.query(query, [email]);
 
             if (usuario.rowCount > 0) {
                 return res.status(400).json({ mensagem: 'Já existe um usuário cadastrado com o e-mail informado.' });
