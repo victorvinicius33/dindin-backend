@@ -123,7 +123,7 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
-const getStatementOfUserTransactions = async (req, res) => {
+const getUserStatement = async (req, res) => {
   const { user } = req;
 
   try {
@@ -170,5 +170,5 @@ module.exports = {
   registerTransaction,
   updateTransaction,
   deleteTransaction,
-  getStatementOfUserTransactions,
+  getUserStatement,
 };

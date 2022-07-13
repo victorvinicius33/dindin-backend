@@ -26,7 +26,7 @@ const verifyLogin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
