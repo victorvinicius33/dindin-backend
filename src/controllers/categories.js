@@ -5,9 +5,7 @@ const listCategories = async (req, res) => {
     const categories = await knex.select('*').from('categories');
 
     if (!categories) {
-      return res
-        .status(400)
-        .json('Nenhuma categoria cadastrada.');
+      return res.status(404).json('Nenhuma categoria encontrada.');
     }
 
     return res.status(200).json(categories);

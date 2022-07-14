@@ -1,4 +1,6 @@
 const knex = require('../services/connection');
+const schemaRegisterTransaction = require('../validations/transactions/schemaRegisterTransaction');
+const schemaUpdateTransaction = require('../validations/transactions/schemaUpdateTransaction');
 
 const listTransactions = async (req, res) => {
   const { user } = req;
@@ -6,9 +8,13 @@ const listTransactions = async (req, res) => {
   try {
     const transactions = await knex('transactions').where({ user_id: user.id });
 
+    if (!transactions) {
+      return res.status(404).json('Nenhuma transação encontrada.');
+    }
+
     return res.status(200).json(transactions);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -30,23 +36,39 @@ const getTransactionDetails = async (req, res) => {
 
     return res.status(200).json(transaction);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
 const registerTransaction = async (req, res) => {
   const { user } = req;
-  const { description, amount, date, category_id, transaction_type } = req.body;
+  const { transaction_type, description, amount, date, category_id } = req.body;
 
   try {
-    const registeredTransaction = await knex('transactions').insert({
-      description,
-      amount,
-      date,
-      category_id,
-      transaction_type,
-      user_id: user.id,
-    });
+    try {
+      await schemaRegisterTransaction.validate(req.body);
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+
+    const category = await knex('categories')
+      .where({ id: category_id })
+      .first();
+
+    if (!category) {
+      return res.status(400).json('Categoria inválida.');
+    }
+
+    const registeredTransaction = await knex('transactions')
+      .insert({
+        transaction_type,
+        description,
+        amount,
+        date,
+        category_id,
+        user_id: user.id,
+      })
+      .returning('*');
 
     if (!registeredTransaction) {
       return res
@@ -54,24 +76,24 @@ const registerTransaction = async (req, res) => {
         .json({ message: 'Não foi possível cadastrar a transação.' });
     }
 
-    return res.status(200).json(registeredTransaction);
+    return res.status(201).json(registeredTransaction[0]);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
 const updateTransaction = async (req, res) => {
   const { user } = req;
-  const { description, amount, date, category_id, category_type } = req.body;
+  const { description, amount, date, category_id, transaction_type } = req.body;
   const { id } = req.params;
 
-  if (!description || !amount || !date || !category_id || !category_type) {
-    return res
-      .status(400)
-      .json({ mensagem: 'Todos os campos são obrigatórios.' });
-  }
-
   try {
+    try {
+      await schemaUpdateTransaction.validate(req.body);
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+
     const transactionFound = await knex('transactions')
       .where({ user_id: user.id, id })
       .first();
@@ -87,14 +109,13 @@ const updateTransaction = async (req, res) => {
         date,
         category_id,
         transaction_type,
-        user_id: user.id,
-        id,
       })
-      .where({ user_id: user.id, id });
+      .where({ user_id: user.id, id })
+      .returning('*');
 
-    return res.status(200).json(updatedTransaction);
+    return res.status(200).json(updatedTransaction[0]);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -115,11 +136,12 @@ const deleteTransaction = async (req, res) => {
 
     const deletedTransaction = await knex('transactions')
       .delete()
-      .where({ id });
+      .where({ id })
+      .returning('*');
 
-    return res.status(200).json(deletedTransaction);
+    return res.status(200).json(deletedTransaction[0]);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -146,7 +168,7 @@ const getUserStatement = async (req, res) => {
 
     const cashOut = transactions
       .filter((transaction) => {
-        return transaction.transaction_type === 'saida';
+        return transaction.transaction_type === 'saída';
       })
       .reduce(
         (totalAmount, currentAmount) => totalAmount + currentAmount.amount,
@@ -160,7 +182,7 @@ const getUserStatement = async (req, res) => {
 
     return res.status(200).json(statement);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
