@@ -1,20 +1,18 @@
 const knex = require('../services/connection');
 
 const listCategories = async (req, res) => {
-  const { user } = req;
-
   try {
-    const categories = await knex('categories').where({ user_id: user.id });
+    const categories = await knex.select('*').from('categories');
 
     if (!categories) {
       return res
         .status(400)
-        .json({ mensagem: 'Nenhuma categoria cadastrada.' });
+        .json('Nenhuma categoria cadastrada.');
     }
 
     return res.status(200).json(categories);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
