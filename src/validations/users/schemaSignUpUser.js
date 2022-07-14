@@ -10,6 +10,9 @@ const schemaSignUpUser = yup.object().shape({
     .string()
     .min(6, 'A senha deve ter no mínimo 6 caracteres.')
     .required('O campo senha é obrigatório.'),
+  repeatPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'As senhas devem ser iguais.'),
 });
 
 module.exports = schemaSignUpUser;

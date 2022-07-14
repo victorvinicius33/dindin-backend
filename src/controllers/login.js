@@ -2,15 +2,18 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const hashPassword = require('../jwt_secret');
 const knex = require('../services/connection');
+const schemaLogin = require('../validations/login/schemaLogin');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(404).json('É obrigatório email e senha.');
-  }
-
   try {
+    try {
+      await schemaLogin.validate(req.body);
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+
     const user = await knex('users')
       .where('email', email)
       .returning('*')
@@ -22,7 +25,7 @@ const login = async (req, res) => {
     const correctPassword = await bcrypt.compare(password, user.password);
 
     if (!correctPassword) {
-      return res.status(400).json('Email e senha não confere.');
+      return res.status(400).json('O e-mail ou senha estão incorretos.');
     }
 
     const token = jwt.sign({ id: user.id }, hashPassword, { expiresIn: '2h' });
