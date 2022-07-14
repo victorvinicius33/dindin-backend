@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users CASCADE;
+CREATE DATABASE dindin;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -6,8 +6,6 @@ CREATE TABLE users (
   email VARCHAR(100) NOT NULL,
   password text NOT NULL
 );
-
-DROP TABLE IF EXISTS categories CASCADE;
 
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
@@ -35,15 +33,13 @@ VALUES
 ('Outras despesas')
 ;
 
-DROP TABLE IF EXISTS transactions CASCADE;
-
 CREATE TABLE transactions (
   id SERIAL PRIMARY KEY,
   description text,
   amount int NOT NULL,
   date timestamp NOT NULL,
   category_id int NOT NULL REFERENCES categories(id),
-  transaction_type text NOT NULL,
+  transaction_type VARCHAR(10) NOT NULL,
   user_id int NOT NULL REFERENCES users(id)
 );
 
