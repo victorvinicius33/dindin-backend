@@ -23,6 +23,6 @@ routes.get('/transacao/:id', transactions.getTransactionDetails);
 routes.post('/transacao', transactions.registerTransaction);
 routes.put('/transacao/:id', transactions.updateTransaction);
 routes.delete('/transacao/:id', transactions.deleteTransaction);
-routes.get('/extrato', transactions.getUserStatement);
+routes.get('/transacao/extrato', transactions.getUserStatement);
 
 module.exports = routes;

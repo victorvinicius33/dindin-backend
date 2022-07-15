@@ -9,7 +9,7 @@ const listTransactions = async (req, res) => {
     const transactions = await knex('transactions').where({ user_id: user.id });
 
     if (!transactions) {
-      return res.status(404).json('Nenhuma transação encontrada.');
+      return res.status(404).json({ message: 'Nenhuma transação encontrada.' });
     }
 
     return res.status(200).json(transactions);
@@ -48,7 +48,7 @@ const registerTransaction = async (req, res) => {
     try {
       await schemaRegisterTransaction.validate(req.body);
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({ message: error.message });
     }
 
     const category = await knex('categories')
@@ -91,7 +91,7 @@ const updateTransaction = async (req, res) => {
     try {
       await schemaUpdateTransaction.validate(req.body);
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({ message: error.message });
     }
 
     const transactionFound = await knex('transactions')
@@ -102,7 +102,7 @@ const updateTransaction = async (req, res) => {
       return res.status(404).json({ message: 'Transação não encontrada.' });
     }
 
-    const updatedTransaction = await knex('transactions')
+    await knex('transactions')
       .update({
         description,
         amount,
@@ -110,10 +110,9 @@ const updateTransaction = async (req, res) => {
         category_id,
         transaction_type,
       })
-      .where({ user_id: user.id, id })
-      .returning('*');
+      .where({ user_id: user.id, id });
 
-    return res.status(200).json(updatedTransaction[0]);
+    return res.status(204).send();
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -134,12 +133,12 @@ const deleteTransaction = async (req, res) => {
         .json({ message: 'Não foi possível encontrar a transação.' });
     }
 
-    const deletedTransaction = await knex('transactions')
+    await knex('transactions')
       .delete()
       .where({ id })
       .returning('*');
 
-    return res.status(200).json(deletedTransaction[0]);
+    return res.status(204).send();
   } catch (error) {
     return res.status(500).json(error.message);
   }

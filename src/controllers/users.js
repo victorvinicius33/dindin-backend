@@ -10,13 +10,16 @@ const signUpUser = async (req, res) => {
     try {
       await schemaSignUpUser.validate(req.body);
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({ message: error.message });
     }
 
     const emailAlreadyExists = await knex('users').where({ email }).first();
 
     if (emailAlreadyExists) {
-      return res.status(400).json('O e-mail informado já existe.');
+      return res.status(400).json({
+        message:
+          'O e-mail informado já está sendo utilizado por outro usuário.',
+      });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -25,10 +28,12 @@ const signUpUser = async (req, res) => {
       .returning('*');
 
     if (!newUser) {
-      return res.status(400).json('Não foi possivel cadastrar o usuário.');
+      return res
+        .status(400)
+        .json({ message: 'Não foi possivel cadastrar o usuário.' });
     }
 
-    const newUserData = { name: newUser[0].name, email: newUser[0].email };
+    const { password: _, ...newUserData } = newUser[0];
 
     return res.status(201).json(newUserData);
   } catch (error) {
@@ -54,7 +59,9 @@ const updateUser = async (req, res) => {
     const user = await knex('users').where({ id }).first();
 
     if (!user) {
-      return res.status(400).json('Não foi possível encontrar o usuário.');
+      return res
+        .status(400)
+        .json({ message: 'Não foi possível encontrar o usuário.' });
     }
 
     if (email) {
@@ -65,54 +72,32 @@ const updateUser = async (req, res) => {
           .first();
 
         if (emailAlreadyExists) {
-          return res.status(400).json('O e-mail informado já existe.');
+          return res.status(400).json({
+            message:
+              'O e-mail informado já está sendo utilizado por outro usuário.',
+          });
         }
       }
     }
 
-    if (password) {
-      const updatedPassword = await bcrypt.hash(password, 10);
-
-      const updatedUser = await knex('users')
-        .update({
-          name,
-          email,
-          password: updatedPassword,
-        })
-        .where('id', req.user.id)
-        .returning('*');
-
-      if (!updatedUser) {
-        return res.status(400).json('O usuário não pode ser atualizado.');
-      }
-
-      const updateUserData = {
-        name: updatedUser[0].name,
-        email: updatedUser[0].email,
-      };
-
-      return res.status(200).json(updateUserData);
-    }
+    const updatedPassword = await bcrypt.hash(password, 10);
 
     const updatedUser = await knex('users')
       .update({
         name,
         email,
-        password,
+        password: updatedPassword,
       })
       .where('id', req.user.id)
       .returning('*');
 
     if (!updatedUser) {
-      return res.status(400).json('O usuário não pode ser atualizado.');
+      return res
+        .status(400)
+        .json({ message: 'O usuário não pode ser atualizado.' });
     }
 
-    const updateUserData = {
-      name: updatedUser[0].name,
-      email: updatedUser[0].email,
-    };
-
-    return res.status(200).json(updateUserData);
+    return res.status(204).send();
   } catch (error) {
     return res.status(500).json(error.message);
   }

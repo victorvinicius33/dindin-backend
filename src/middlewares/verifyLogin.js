@@ -5,7 +5,12 @@ const verifyLogin = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json('Não autorizado.');
+    return res
+      .status(401)
+      .json({
+        message:
+          'Para acessar este recurso um token de autenticação válido deve ser enviado.',
+      });
   }
 
   try {
@@ -16,7 +21,7 @@ const verifyLogin = async (req, res, next) => {
     const loggedUser = await knex('users').where({ id }).first();
 
     if (!loggedUser) {
-      return res.status(404).json('Usuário não encontrado.');
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
     const { password, ...user } = loggedUser;

@@ -10,12 +10,14 @@ const login = async (req, res) => {
     try {
       await schemaLogin.validate(req.body);
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({ message: error.message });
     }
 
     const user = await knex('users').where('email', email).first();
     if (!user) {
-      return res.status(400).json('O e-mail ou senha estão incorretos.');
+      return res
+        .status(400)
+        .json({ message: 'O e-mail ou senha estão incorretos.' });
     }
 
     const correctPassword = await bcrypt.compare(password, user.password);
