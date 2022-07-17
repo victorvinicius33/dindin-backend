@@ -10,7 +10,7 @@
 
 ## **About the project**
 
- This project is an RESTful API, made with Node.js and PostgreSQL, that was made as the backend for a website called "Dindin".
+ This project is an RESTful API, made with Node.js and PostgreSQL, that was made as the backend for a website called "Dindin". The API was made to store, and organize the user finances.
  
 ## **Database**
  
