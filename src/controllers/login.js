@@ -1,18 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const knex = require('../services/connection');
-const schemaLogin = require('../validations/login/schemaLogin');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    try {
-      await schemaLogin.validate(req.body);
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
-    }
-
     const user = await knex('users').where('email', email).first();
     if (!user) {
       return res

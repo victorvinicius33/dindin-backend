@@ -1,6 +1,4 @@
 const knex = require('../services/connection');
-const schemaRegisterTransaction = require('../validations/transactions/schemaRegisterTransaction');
-const schemaUpdateTransaction = require('../validations/transactions/schemaUpdateTransaction');
 
 const listTransactions = async (req, res) => {
   const { user } = req;
@@ -45,12 +43,6 @@ const registerTransaction = async (req, res) => {
   const { transaction_type, description, amount, date, category_id } = req.body;
 
   try {
-    try {
-      await schemaRegisterTransaction.validate(req.body);
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
-    }
-
     const category = await knex('categories')
       .where({ id: category_id })
       .first();
@@ -88,12 +80,6 @@ const updateTransaction = async (req, res) => {
   const { id } = req.params;
 
   try {
-    try {
-      await schemaUpdateTransaction.validate(req.body);
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
-    }
-
     const transactionFound = await knex('transactions')
       .where({ user_id: user.id, id })
       .first();

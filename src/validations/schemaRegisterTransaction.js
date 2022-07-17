@@ -1,6 +1,6 @@
 const yup = require('yup');
 
-const schemaUpdateTransaction = yup.object().shape({
+const schemaRegisterTransaction = yup.object().shape({
   description: yup.string(),
   amount: yup.number().required('É necessário informar o valor da transação.'),
   date: yup
@@ -14,6 +14,7 @@ const schemaUpdateTransaction = yup.object().shape({
     .string()
     .required('É necessário informar o tipo da transação.')
     .oneOf(['entrada', 'saída'], 'Tipo inválido de transação.'),
+  category_id: yup.number().required('É necessário informar uma categoria.'),
 });
 
-module.exports = schemaUpdateTransaction;
+module.exports = schemaRegisterTransaction;

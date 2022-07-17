@@ -9,6 +9,7 @@ const schemaSignUpUser = yup.object().shape({
   password: yup
     .string()
     .min(6, 'A senha deve ter no mínimo 6 caracteres.')
+    .max(20, 'Sua senha deve ter no máximo 20 caracteres.')
     .required('O campo senha é obrigatório.'),
   repeatPassword: yup
     .string()

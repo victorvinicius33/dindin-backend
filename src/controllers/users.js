@@ -1,18 +1,10 @@
 const knex = require('../services/connection');
 const bcrypt = require('bcrypt');
-const schemaSignUpUser = require('../validations/users/schemaSignUpUser');
-const schemaUpdateUser = require('../validations/users/schemaUpdateUser');
 
 const signUpUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    try {
-      await schemaSignUpUser.validate(req.body);
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
-    }
-
     const emailAlreadyExists = await knex('users').where({ email }).first();
 
     if (emailAlreadyExists) {
@@ -50,12 +42,6 @@ const updateUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    try {
-      await schemaUpdateUser.validate(req.body);
-    } catch (error) {
-      return res.status(400).json(error.message);
-    }
-
     const user = await knex('users').where({ id }).first();
 
     if (!user) {
