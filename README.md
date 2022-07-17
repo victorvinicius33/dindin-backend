@@ -161,7 +161,7 @@
 
     -   name
     -   email
-    -   password
+    -   password (optional)
     -   repeatPassword
     
 #### **Request example**

@@ -66,13 +66,32 @@ const updateUser = async (req, res) => {
       }
     }
 
-    const updatedPassword = await bcrypt.hash(password, 10);
+    if (password) {
+      const updatedPassword = await bcrypt.hash(password, 10);
+
+      const updatedUser = await knex('users')
+        .update({
+          name,
+          email,
+          password: updatedPassword,
+        })
+        .where('id', req.user.id)
+        .returning('*');
+
+      if (!updatedUser) {
+        return res
+          .status(400)
+          .json({ message: 'O usuário não pôde ser atualizado.' });
+      }
+
+      return res.status(204).send();
+    }
 
     const updatedUser = await knex('users')
       .update({
         name,
         email,
-        password: updatedPassword,
+        password,
       })
       .where('id', req.user.id)
       .returning('*');
@@ -80,7 +99,7 @@ const updateUser = async (req, res) => {
     if (!updatedUser) {
       return res
         .status(400)
-        .json({ message: 'O usuário não pode ser atualizado.' });
+        .json({ message: 'O usuário não pôde ser atualizado.' });
     }
 
     return res.status(204).send();
