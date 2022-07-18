@@ -119,10 +119,7 @@ const deleteTransaction = async (req, res) => {
         .json({ message: 'Não foi possível encontrar a transação.' });
     }
 
-    await knex('transactions')
-      .delete()
-      .where({ id })
-      .returning('*');
+    await knex('transactions').delete().where({ id }).returning('*');
 
     return res.status(204).send();
   } catch (error) {
@@ -137,9 +134,7 @@ const getUserStatement = async (req, res) => {
     const transactions = await knex('transactions').where({ user_id: user.id });
 
     if (!transactions) {
-      return res
-        .status(404)
-        .json({ message: 'não foi encontrada nenhuma transação.' });
+      return res.status(200).json({ cashIn: 0, cashOut: 0 });
     }
 
     const cashIn = transactions
@@ -147,7 +142,7 @@ const getUserStatement = async (req, res) => {
         return transaction.transaction_type === 'entrada';
       })
       .reduce(
-        (totalAmount, currentAmount) => totalAmount + currentAmount.amount,
+        (totalAmount, currentTransaction) => totalAmount + currentTransaction.amount,
         0
       );
 
@@ -156,7 +151,7 @@ const getUserStatement = async (req, res) => {
         return transaction.transaction_type === 'saída';
       })
       .reduce(
-        (totalAmount, currentAmount) => totalAmount + currentAmount.amount,
+        (totalAmount, currentTransaction) => totalAmount + currentTransaction.amount,
         0
       );
 
@@ -167,6 +162,7 @@ const getUserStatement = async (req, res) => {
 
     return res.status(200).json(statement);
   } catch (error) {
+    console.log(error)
     return res.status(500).json(error.message);
   }
 };

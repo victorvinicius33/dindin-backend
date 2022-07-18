@@ -13,7 +13,7 @@ const schemaUpdateTransaction = require('./validations/schemaUpdateTransaction')
 
 const routes = express();
 
-routes.post('/cadastrar', validation(schemaSignUpUser), users.signUpUser);
+routes.post('/usuario', validation(schemaSignUpUser), users.signUpUser);
 
 routes.post('/login', validation(schemaLogin), login);
 
@@ -25,10 +25,10 @@ routes.put('/usuario', validation(schemaUpdateUser), users.updateUser);
 routes.get('/categoria', categories.listCategories);
 
 routes.get('/transacao', transactions.listTransactions);
+routes.get('/transacao/extrato', transactions.getUserStatement);
 routes.get('/transacao/:id', transactions.getTransactionDetails);
 routes.post('/transacao', validation(schemaRegisterTransaction), transactions.registerTransaction);
 routes.put('/transacao/:id', validation(schemaUpdateTransaction), transactions.updateTransaction);
 routes.delete('/transacao/:id', transactions.deleteTransaction);
-routes.get('/transacao/extrato', transactions.getUserStatement);
 
 module.exports = routes;
