@@ -16,7 +16,9 @@ const login = async (req, res) => {
     const correctPassword = await bcrypt.compare(password, user.password);
 
     if (!correctPassword) {
-      return res.status(400).json('O e-mail ou senha estão incorretos.');
+      return res
+        .status(400)
+        .json({ message: 'O e-mail ou senha estão incorretos.' });
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
@@ -30,7 +32,7 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
