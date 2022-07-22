@@ -4,7 +4,7 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL,
-  password VARCHAR(20) NOT NULL
+  password TEXT NOT NULL
 );
 
 CREATE TABLE categories (
@@ -42,11 +42,3 @@ CREATE TABLE transactions (
   transaction_type VARCHAR(10) NOT NULL,
   user_id int NOT NULL REFERENCES users(id)
 );
-
-INSERT INTO categories (description) VALUES
-    ('Alimentação'), ('Assinaturas e Serviços'),
-    ('Casa'), ('Mercado'), ('Cuidados Pessoais'),
-    ('Educação'), ('Família'), ('Lazer'),
-    ('Pets'), ('Presentes'), ('Roupas'),
-    ('Saúde'), ('Transporte'), ('Salário'),
-    ('Vendas'), ('Outras receitas'), ('Outras despesas');
