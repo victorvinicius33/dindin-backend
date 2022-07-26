@@ -1,6 +1,6 @@
 # DinDin - Back End
 
-# Selecione um idioma: <a href="./README_pt-br.md">Português (Brasil)<a/>, Inglês.
+### Selecione um idioma: <a href="./README_pt-br.md">Português (Brasil)<a/>, Inglês.
 
 ## Author
 
