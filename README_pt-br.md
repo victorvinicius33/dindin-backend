@@ -1,8 +1,8 @@
 # DinDin - Back End
 
-# Selecione um idioma: <a href="./README_pt-br.md">Português (Brasil)<a/>, Inglês.
+# Selecione um idioma: Português (Brasil), <a href="./README.md">Inglês<a/>.
 
-## Author
+## Autor
 
 | [<img src="https://avatars.githubusercontent.com/u/94022088?s=400&u=829c8531a69be7d30b1096c762a5ff4f9a7172fe&v=4" width=115><br><sub>Victor Vinícius da Silva Galvão</sub>](https://github.com/victorvinicius33) 
 | :---: |
@@ -10,31 +10,31 @@
 [![Linkedin Badge](https://img.shields.io/badge/-Victor-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/victor-v-s-galvao/)](https://www.linkedin.com/in/victor-v-s-galvao/) 
 [![Gmail Badge](https://img.shields.io/badge/-victorvinicius33.vv@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:victorvinicius33.vv@gmail.com)](mailto:victorvinicius33.vv@gmail.com)
 
-## **About the project**
+## **Sobre o projeto**
 
- This project is an RESTful API, made with Node.js and PostgreSQL, and it's the backend for a website called "Dindin". The API was made to store, and organize the user finances.
+ Esse projeto é uma API RESTful, feito com Node.js e PostgreSQL, e é o backend de um Website chamado "Dindin". A API foi feita para armazenar, e organizar as finanças do usuário.
  
 ## **Database**
  
- The schema in the SQL database, can be found inside the `src` folder, named as "dump.sql". URL of dump.sql: `./src/dump.sql`.
+ O schema do database SQL, pode ser encontrado dentro da pasta `src`, com o nome de "dump.sql". URL do dump.sql: `./src/dump.sql`.
  
 ## **Endpoints**
 
-### **Sign up**
+### **Cadastrar usuário**
 
 #### `POST` `/usuario`
 
 -   **Request**  
     
-    No route parameters or query.  
-    The body must have an object with the following properties:
+    Sem parâmetros de rota ou de query.  
+    O corpo (body) deverá possuir um objeto com as seguintes propriedades:
 
     -   name
     -   email
     -   password
     -   repeatPassword
 
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // POST /usuario
@@ -46,7 +46,7 @@
 }
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 201
@@ -64,18 +64,18 @@
 }
 ```
 
-### **Login user**
+### **Login do usuário**
 
 #### `POST` `/login`
 
 -   **Request**  
-    No route parameters or query.  
-    The body must have an object with the following properties:
+    Sem parâmetros de rota ou de query.  
+    O corpo (body) deverá possuir um objeto com as seguintes propriedades:
 
     -   email
     -   password
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // POST /usuario
@@ -85,7 +85,7 @@
 }
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
@@ -108,9 +108,9 @@
 
 ---
 
-## **ATENTION**: All the following endpoints, from now on, require the authentication token of the logged in user, receiving a header with the Bearer Token format. 
+## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, deverão exigir o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, em cada funcionalidade será necessário validar o token informado. 
 
--    **Header example**
+-    **exemplo de Header**
 
 ```javascript
 {
@@ -120,13 +120,13 @@
 
 ---
 
-### **Detail user**
+### **Detalhar usuário**
 
 #### `GET` `/user`
 
--   **Request**  
-    No route parameters or query.  
-    No content in the body request.
+-   **Requisição**  
+    Sem parâmetros de rota ou de query.  
+    Não deverá possuir conteúdo no corpo da requisição.
     
 #### **Request example**
 
@@ -135,7 +135,7 @@
 // No content in the body request.
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
@@ -153,20 +153,20 @@
 }
 ```
 
-### **Update user**
+### **Atualizar usuário**
 
 #### `PUT` `/user`
 
--   **Request**  
-    No route parameters or query.  
-    The body must have an object with the following properties:
+-   **Requisição**  
+    Sem parâmetros de rota ou de query.  
+    O corpo (body) deverá possuir um objeto com as seguintes propriedades:
 
     -   name
     -   email
     -   password (optional)
     -   repeatPassword
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // POST /usuario
@@ -178,11 +178,11 @@
 }
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 204
-// No content in the body response.
+// Sem conteúdo no corpo (body) da resposta.
 ```
 
 ```javascript
@@ -191,22 +191,22 @@
     "message": "O e-mail informado já está sendo utilizado por outro usuário."
 }
 ```
-### **List categories**
+### **Listar categorias**
 
 #### `GET` `/categoria`
 
--   **Request**  
-    No route parameters or query.  
-    No content in the body request.
+-   **Requisição**  
+    Sem parâmetros de rota ou de query.  
+    Não deverá possuir conteúdo no corpo (body) da requisição.
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // GET /categoria
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
@@ -227,24 +227,24 @@
 []
 ```
 
-**P.S. The schema has categories by default, see the `dump.sql` file for more information.**
+**Obs: O schema tem categorias por padrão, veja o arquivo `dump.sql` para mais informações.**
 
-### **List transactions of logged in user**
+### **Listar transações do usuário logado**
 
 #### `GET` `/transacao`
 
--   **Request**  
-    No route parameters or query.  
-    No content in the body request.
+-   **Requisição**  
+    Sem parâmetros de rota ou de query.  
+    Não deverá possuir conteúdo no corpo (body) da requisição.
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // GET /transacao
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
@@ -279,19 +279,19 @@
 }
 ```
 
-### **Detail a transaction of the logged in user**
+### **Detalhar uma transação do usuário logado**
 
 #### `GET` `/transacao/:id`
 
--   **Request**  
-    The transaction ID must be sent in the endpoint's route parameter.  
-    No content in the body request.
+-   **Requisição**  
+    Deverá ser enviado o ID da transação no parâmetro de rota do endpoint.  
+    O corpo (body) da requisição não deverá possuir nenhum conteúdo.
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // GET /transacao/2
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
 #### **Response examples**
@@ -316,21 +316,21 @@
 }
 ```
 
-### **Register a transaction of the logged in user**
+### **Cadastrar transação para o usuário logado**
 
 #### `POST` `/transacao`
 
--   **Request**  
-    No route parameters or query.   
-    The body must have an object with the following properties:
+-   **Requisição**  
+    Sem parâmetros de rota ou de query.  
+    O corpo (body) da requisição deverá possuir um objeto com as seguintes propriedades:
 
       -   description
       -   amount
       -   date
       -   category_id
-      -   transaction_type (The type can be "entrada" or "saída")
+      -   transaction_type (O tipo pode ser "entrada" ou "saída")
 
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // POST /transacao
@@ -343,7 +343,7 @@
 }
 ```
 
-#### **Response example**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 201
@@ -365,21 +365,21 @@
 }
 ```
 
-### **Update a transaction of the logged in user**
+### **Atualizar transação do usuário logado**
 
 #### `POST` `/transacao/:id`
 
--   **Request**  
-    The transaction ID must be sent in the endpoint's route parameter.  
-    The body must have an object with the following properties:
+-   **Requisição**  
+    Deverá ser enviado o ID da transação no parâmetro de rota do endpoint.  
+    O corpo (body) da requisição deverá possuir um objeto com as seguintes propriedades:
 
       -   description
       -   amount
       -   date
       -   category_id
-      -   transaction_type (The type can be "entrada" or "saída")
+      -   transaction_type (O tipo pode ser "entrada" ou "saída")
 
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // POST /transacao/:id
@@ -392,11 +392,11 @@
 }
 ```
 
-#### **Response example**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 204
-// No content in the body response.
+// Sem conteúdo no corpo (body) da resposta.
 ```
 
 ```javascript
@@ -406,26 +406,26 @@
 }
 ```
 
-### **Delete a transaction of the logged in user**
+### **Excluir transação do usuário logado**
 
 #### `DELETE` `/transacao/:id`
 
--   **Request**  
-    The transaction ID must be sent in the endpoint's route parameter. 
-    No content in the body request.
+-   **Requisição**  
+    Deverá ser enviado o ID da transação no parâmetro de rota do endpoint.  
+    O corpo (body) da requisição não deverá possuir nenhum conteúdo.
 
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // DELETE /transacao/2
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
-#### **Response example**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 204
-// No content in the body response.
+// Sem conteúdo no corpo (body) da resposta.
 ```
 
 ```javascript
@@ -435,22 +435,22 @@
 }
 ```
 
-### **Get user statement**
+### **Obter extrato do usuário**
 
 #### `GET` `/transacao/extrato`
 
 -   **Request**  
-    No route parameters or query.   
-    No content in the body request.
+    Sem parâmetros de rota ou de query.  
+    O corpo (body) da requisição não deverá possuir nenhum conteúdo.
 
 #### **Request example**
 
 ```javascript
 // GET /transacao/extrato
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
-#### **Response example**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
