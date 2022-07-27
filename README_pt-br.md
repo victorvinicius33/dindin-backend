@@ -1,6 +1,6 @@
 # DinDin - Back End
 
-# Selecione um idioma: Português (Brasil), <a href="./README.md">Inglês<a/>.
+### Selecione um idioma: Português (Brasil), <a href="./README.md">Inglês<a/>.
 
 ## Autor
 
@@ -24,7 +24,7 @@
 
 #### `POST` `/usuario`
 
--   **Request**  
+-   **Requisição**  
     
     Sem parâmetros de rota ou de query.  
     O corpo (body) deverá possuir um objeto com as seguintes propriedades:
@@ -68,7 +68,7 @@
 
 #### `POST` `/login`
 
--   **Request**  
+-   **Requisição**  
     Sem parâmetros de rota ou de query.  
     O corpo (body) deverá possuir um objeto com as seguintes propriedades:
 
@@ -128,11 +128,11 @@
     Sem parâmetros de rota ou de query.  
     Não deverá possuir conteúdo no corpo da requisição.
     
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // GET /user
-// No content in the body request.
+// Sem conteúdo no corpo (body) da requisição.
 ```
 
 #### **Exemplos de resposta**
@@ -294,7 +294,7 @@
 // Sem conteúdo no corpo (body) da requisição.
 ```
 
-#### **Response examples**
+#### **Exemplos de resposta**
 
 ```javascript
 // HTTP Status 200
@@ -439,11 +439,11 @@
 
 #### `GET` `/transacao/extrato`
 
--   **Request**  
+-   **Requisição**  
     Sem parâmetros de rota ou de query.  
     O corpo (body) da requisição não deverá possuir nenhum conteúdo.
 
-#### **Request example**
+#### **Exemplo de requisição**
 
 ```javascript
 // GET /transacao/extrato
